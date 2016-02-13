@@ -1,5 +1,5 @@
 
- Google Analytics Case Study
+ Best Soccer club in the world - Case Study
 ==========================================
 
 ## Business motivation
@@ -17,9 +17,17 @@ print(t1,'chart')
 ## Questions solved
 
 1. Where do customers come from? Which sites/ads are “feeding" our sales?<br>
+  Considering websites, total sales come from:<br>
     •	69% organic (search engines, 64% google, 2% bing, 1% yahoo, 1% navers, 1% others)<br>
     •	26% direct<br>
     •	5% others<br>
+  Regarding geography, sales come from:<br>
+    •	71% Spain<br>
+    •	5% UK<br>
+    •	3% France<br>
+    •	3% Germany and Switz. <br>     
+    •	2% USA<br>
+    •	16% others<br>
 2. Which combinations of sources and mediums attract the more amount of new visitors?<br>
   •	54% organic (search engines, 51% google, 1% bing, 1% yahoo, 0,5% navers, 0,5% others)<br>
   •	36% direct<br>
@@ -31,12 +39,20 @@ print(t1,'chart')
 4. Are people who initially came from banners more likely to buy or not?<br>
   •	Users that landed on the website coming from banners have zero purchases<br>
 5.	Can we build a model to predict average purchase?<br>
-  •	No, a regression for this would yield R2¬=8% but the regressions for quantity or total revenues yield R2¬=99%<br>
+  •	No, a regression for this would yield R2=8% but the regressions for quantity or total revenues yield R2=99%<br>
 
 ## Questions to solve
-6. Are there products that are typically bought together (e.g. game tickets and sweaters)? Could we work on some bundles? - ***Cannot test***<br>
-7. What are the trends in purchases before the matches? - ***Cannot test***<br>
-8.	What are the pages with the highest average time on page? Should we suggest to have more of this content? And do these views lead to sales? – ***ask Javier***<br>
-9.	What are the exit rates (Exit rate= exits/pageviews) and can we do something to reduce exit rates? These could represent lost sales – ***ask Javier***<br>
+6. Adding to the question 1 of where do customer come from: do users in Madrid buy online? Is a significant share of the Spanish buyers from Madrid? Otherwise we can raise the question if the Madrilenos know that they can buy online... – *ask Javier for* ***city***
+7. How do knew users find the website? How could the club further spread the brand and increase the number of new users to the website? – *ask Javier for* ***newUsers***<br>
+8. Are ticket buyers already regular visitors to the site? Or are they mostly coming for one time purchase? – *ask Javier for* ***newUsers, daysSinceLastSession***<br>
+9. What is the average time spent on the website? What do users do on it? – *ask Javier for* ***timeOnPage***<br>
+10. Are users accessing from certain brands of computers/smartphones more likely to buy? Or to have a higher Order Average Value? – *ask Javier for* ***for operatingSystem***<br>
+11. Could we find a way to better segment the market of buyers online? – *ask Javier for* ***operatingSystem, browser, userAgeBracket, userGender***<br>
+12. What are the pages with the highest average time on page? Should we suggest to have more of this content? And do these views lead to sales? – *ask Javier for* ***pagePath***<br>
+13. How could the club further spread the brand? Which dimensions/metrics could we look into to address this? Adwords? – ***ask Javier***<br>
 
-
+## Questions unsolvable due to lack of data
+1. Are there products that are typically bought together (e.g. game tickets and sweaters)? Could we work on some bundles? - ***Cannot test***<br>
+2. What are the trends in purchases before the matches? - ***Cannot test***<br>
+ <br>
+ <br>
