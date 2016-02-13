@@ -1,36 +1,9 @@
-# Data Analysis and Visualization with Google Analytics (GA)
-#
-# Big Data and Analytics for Business - INSEAD 2015
-#
-# Jesús Martín Calvo (15J)
-#
-# In this case study we will download data from GA using the
-# GA Core Reporting API and then use it to create basic visualizations 
-# and analysis on the user behavior in a website.
-#
-# What is an API: http://en.wikipedia.org/wiki/Application_programming_interface
-# More on the GA Core Reporting API: https://developers.google.com/analytics/devguides/reporting/core/v3/
-#
-# We will use the following packages:
-# RGoogleAnalytics: to connect with GA API and download the data
-# dplyr: to manipulate the data
-# lattice, ggplot2: to visualize the data
-# stringr: to manipulate text
-# Other packages will be used (knitr, shiny) as seen in class
-#
-#
-# You must have access to a Google Analytics account through your Gmail/Google account.
-# 
-# The website that you have access to must have more than 3 months of available data.
-#
-# If you do not have access, use the data in data/GACaseStudyData.csv 
-#
 
 # Clean the workspace
 rm(list=ls())
 
 # Set up the working directory
-
+setwd("C:/Users/pedrocarreira/OneDrive/Documents/20. P3-BDA/SoccerClubAnalytics/")
 local_directory <- getwd()
 
 # Install and load required packages
@@ -79,8 +52,7 @@ report_file = "GAReport"
 # CONTINUE HERE
 # If you do not have access to GA, load the csv in the "data" folder into the variable gadata
 if (!exists("gadata")) 
-  gadata <- within(read.csv(paste(local_directory,"data/GACaseStudyData.csv", sep="/")),rm("X"))
-
+   gadata <- read.csv(paste(local_directory,"data/INS_report_RM_II.csv", sep="/"), sep=";",dec=".")
 # Make sure ga.data contains the data you want
 #str(gadata)
 #head(gadata)
