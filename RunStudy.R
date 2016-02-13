@@ -1,103 +1,91 @@
+# Data Analysis and Visualization with Google Analytics (GA)
+#
+# Big Data and Analytics for Business - INSEAD 2015
+#
+# Jesús Martín Calvo (15J)
+#
+# In this case study we will download data from GA using the
+# GA Core Reporting API and then use it to create basic visualizations 
+# and analysis on the user behavior in a website.
+#
+# What is an API: http://en.wikipedia.org/wiki/Application_programming_interface
+# More on the GA Core Reporting API: https://developers.google.com/analytics/devguides/reporting/core/v3/
+#
+# We will use the following packages:
+# RGoogleAnalytics: to connect with GA API and download the data
+# dplyr: to manipulate the data
+# lattice, ggplot2: to visualize the data
+# stringr: to manipulate text
+# Other packages will be used (knitr, shiny) as seen in class
+#
+#
+# You must have access to a Google Analytics account through your Gmail/Google account.
+# 
+# The website that you have access to must have more than 3 months of available data.
+#
+# If you do not have access, use the data in data/GACaseStudyData.csv 
+#
 
-############################################
-############################################
-# SOME LINES TO MODIFY (if you add/remove lines, these may change!): 24, 28, 29, 30, 34, 38, 42, 46, 49, 52 (typically only 29, 34, 38, 42, 46)
-############################################
-############################################
+# Clean the workspace
+rm(list=ls())
 
-# Project Name: "Sessions 2-3 of INSEAD Data Analytics for Business Course: "Dimensionality Reduction and Derived Attributes"
+# Set up the working directory
 
-rm(list = ls( ))
+local_directory <- getwd()
 
-######################################################################
+# Install and load required packages
 
-# THESE ARE THE PROJECT PARAMETERS NEEDED TO GENERATE THE REPORT
-
-# When running the case on a local computer, modify this in case you saved the case in a different directory 
-# (e.g. local_directory <- "C:/user/MyDocuments" )
-# type in the Console below help(getwd) and help(setwd) for more information
-local_directory <- paste(getwd(),"CourseSessions/Sessions23", sep="/")
-#local_directory <- "~INSEADAnalytics/CourseSessions/Sessions23"
-
-cat("\n *********\n WORKING DIRECTORY IS ", local_directory, "\n PLEASE CHANGE IT IF IT IS NOT CORRECT using setwd(..) - type help(setwd) for more information \n *********")
-
-# Please ENTER the name of the file with the data used. The file should contain a matrix with one row per observation (e.g. person) and one column per attribute. THE NAME OF THIS MATRIX NEEDS TO BE ProjectData (otherwise you will need to replace the name of the ProjectData variable below with whatever your variable name is, which you can see in your Workspace window after you load your file)
-datafile_name="MBAadmin" #  do not add .csv at the end! make sure the data are numeric!!!! check your file!
-
-# Please ENTER the filename of the Report and Slides (in the doc directory) to generate 
-
-report_file = "Report_s23"
-#report_file = "MyBoatsFactor"
-slides_file = "Slides_s23"
-
-# Please ENTER then original raw attributes to use. 
-# Please use numbers, not column names! e.g. c(1:5, 7, 8) uses columns 1,2,3,4,5,7,8
-factor_attributes_used= c(1:7)
-
-# Please ENTER the selection criterions for the factors to use. 
-# Choices: "eigenvalue", "variance", "manual"
-factor_selectionciterion = "eigenvalue"
-
-# Please ENTER the desired minumum variance explained 
-# (ONLY USED in case "variance" is the factor selection criterion used). 
-minimum_variance_explained = 65  # between 1 and 100
-
-# Please ENTER the number of factors to use 
-# (ONLY USED in case "manual" is the factor selection criterion used).
-manual_numb_factors_used = 2
-
-# Please ENTER the rotation eventually used (e.g. "none", "varimax", "quatimax", "promax", "oblimin", "simplimax", and "cluster" - see help(principal)). Defauls is "varimax"
-rotation_used="varimax"
-
-# Please enter the minimum number below which you would like not to print - this makes the readability of the tables easier. Default values are either 10e6 (to print everything) or 0.5. Try both to see the difference.
-MIN_VALUE=0.5
-
-# Please enter the maximum number of observations to show in the report and slides 
-# (DEFAULT is 50. If the number is large the report and slides may not be generated - very slow or will crash!!)
-max_data_report = 50 # can also chance in server.R
-
-
-###########################
-# Would you like to also start a web application on YOUR LOCAL COMPUTER once the report and slides are generated?
-# Select start_webapp <- 1 ONLY if you run the case on your local computer
-# NOTE: Running the web application on your LOCAL computer will open a new browser tab
-# Otherwise, when running on a server the application will be automatically available
-# through the ShinyApps directory
-
-# 1: start application on LOCAL computer, 0: do not start it
-# SELECT 0 if you are running the application on a server 
-# (DEFAULT is 0). 
-start_local_webapp <- 1
-# NOTE: You need to make sure the shiny library is installing (see below)
-
-################################################
-# Now run everything
-
-# this loads the selected data: DO NOT EDIT THIS LINE
-ProjectData <- read.csv(paste(paste(local_directory, "data", sep="/"), paste(datafile_name,"csv", sep="."), sep = "/"), sep=";", dec=",") # this contains only the matrix ProjectData
-ProjectData=data.matrix(ProjectData) 
-
-if (datafile_name == "Boats")
-  colnames(ProjectData)<-gsub("\\."," ",colnames(ProjectData))
-
-factor_attributes_used = unique(sapply(factor_attributes_used,function(i) min(ncol(ProjectData), max(i,1))))
-ProjectDataFactor=ProjectData[,factor_attributes_used]
 source(paste(local_directory,"R/library.R", sep="/"))
 
-### TO EDIT DEPENDING ON VERSION
-if (require(shiny) == FALSE) 
-  install.packages("shiny")
+# This is the name of the Report and Slides (in the doc directory) to generate 
+report_file = "GAReport"
 
-source(paste(local_directory,"R/heatmapOutput.R", sep = "/"))
+##############################
+# Skip this part if you do not have access to Google Analytics (jump to CONTINUE HERE)
+
+# In order to download data from GA API, you need to give access to your application
+# 
+# Step 1: Visit https://console.developers.google.com and log in with the Google Account 
+# that you have access to GA
+# Step 2: Create a project, click "APIs&auth" and then "APIs" and enable Analytics API
+# Step 3: Click "Credentials", type RINSEAD in "Product name" and Save
+# Step 4: Click "Credentials" and then "Create a new Client ID"
+# Step 4: Select "Installed Application" and "Other" and click in "Create Client ID"
+# Step 5: Run the following code with the information that is displayed in the fields {}:
+# client.id <- "{copy paste your Client ID here}"
+# client.secret <- "{copy paste your Client secret here}"
+# token <- Auth(client.id,client.secret)
+# ValidateToken(token)
+# Give permissions to your application to access your GA data
+# You must see in your RStudio console "Authentication complete."
+# If you need help, type "?Auth" (no quotes) in the RStudio console
+# 
+# Now, we will download the data from GA Core Reporting API.
+# First of all, you need to tell R which is the tableID that you want to use.
+# Visit http://analytics.google.com, select the view where you want to take the data from
+# and click on "Admin", then click on "View Settings"
+# Run the following code with the View ID in the field {}
+# table.id <- "{copy paste your View ID here}"
+# Now, we are ready to create the criteria for the data we want to download
+# Run the following code adding the required information in the fields{}.
+# Format is YYYY-MM-DD
+# start.date  <-  "{Start date of the data}"
+# end.date  <-  "{End date of the data}"
+# Make sure you have at least three months of data
+# Now, run the following code
+
+# source(paste(local_directory,"R/GAQuery.R", sep="/"))
+
+# CONTINUE HERE
+# If you do not have access to GA, load the csv in the "data" folder into the variable gadata
+if (!exists("gadata")) 
+  gadata <- within(read.csv(paste(local_directory,"data/GACaseStudyData.csv", sep="/")),rm("X"))
+
+# Make sure ga.data contains the data you want
+#str(gadata)
+#head(gadata)
+# Now you have your data completely clean to analyze and visualize.
+# 
+# Create the report
 source(paste(local_directory,"R/runcode.R", sep = "/"))
-
-if (start_local_webapp){
-  
-  # first load the data files in the data directory so that the App see them
-  MBAadmin <- read.csv(paste(local_directory, "data/MBAadmin.csv", sep = "/"), sep=";", dec=",") # this contains only the matrix ProjectData
-  Boats <- read.csv(paste(local_directory, "data/Boats.csv", sep = "/"), sep=";", dec=",") # this contains only the matrix ProjectData
-  Boats=data.matrix(Boats) # this file needs to be converted to "numeric"....
-  
-  # now run the app
-  runApp(paste(local_directory,"tools", sep="/"))  
-}
+# 
