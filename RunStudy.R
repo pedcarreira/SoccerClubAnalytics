@@ -3,7 +3,7 @@
 rm(list=ls())
 
 # Set up the working directory
-setwd("C:/Users/pedrocarreira/OneDrive/Documents/20. P3-BDA/SoccerClubAnalytics/")
+
 local_directory <- getwd()
 
 # Install and load required packages
@@ -51,8 +51,12 @@ report_file = "GAReport"
 
 # CONTINUE HERE
 # If you do not have access to GA, load the csv in the "data" folder into the variable gadata
-if (!exists("gadata")) 
-   gadata <- read.csv(paste(local_directory,"data/INS_report_RM_II.csv", sep="/"), sep=";",dec=".")
+
+  gadata <- read.csv(paste(local_directory,"data/INS report RM II.csv", sep="/"), sep=";",dec=",")
+  gadata3 <- read.csv(paste(local_directory,"data/INS report RM III.csv", sep="/"), sep=";",dec=",")
+  gadata4 <- read.csv(paste(local_directory,"data/INS report RM IV.csv", sep="/"), sep=";",dec=",")
+  gadata5 <- read.csv(paste(local_directory,"data/INS report RM V.csv", sep="/"), sep=";",dec=",")
+
 # Make sure ga.data contains the data you want
 #str(gadata)
 #head(gadata)
