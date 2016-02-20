@@ -2,6 +2,15 @@
 output: html_document
 runtime: shiny
 ---
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis'}
+source("RunStudy.R")
+setwd("./doc")
+
+img <- readPNG('real.png')
+grid::grid.raster(img)
+
+```
+
  Best Soccer club in the world - Case Study
 ==========================================
 
@@ -16,8 +25,6 @@ Data on the the club's website usage and tickets' purchase referring to the peri
 ## Data Description
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
-source("RunStudy.R")
-setwd("./doc")
 
 t1 <- gvisTable(gadata[1:100,],options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(gadata) + 1)), allowHTML = TRUE, page = 'disable'))
 print(t1,'chart')

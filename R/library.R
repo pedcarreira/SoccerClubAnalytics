@@ -11,7 +11,7 @@ get_libraries <- function(filenames_list) {
 libraries_used=c("dplyr","lattice","devtools","knitr","graphics",
                  "grDevices","xtable","Hmisc","vegan","fpc","GPArotation","slidify",
                  "FactoMineR","cluster","psych","stringr","googleVis", "png",
-                 "ggplot2","googleVis", "gridExtra", "ggmap", "maptools", "maps","shiny","wordcloud")
+                 "ggplot2","googleVis", "gridExtra", "ggmap", "maptools", "maps","shiny","wordcloud","png","grDevices")
 get_libraries(libraries_used)
 
 if (do.call(require,list("RGoogleAnalytics")) == FALSE) 
