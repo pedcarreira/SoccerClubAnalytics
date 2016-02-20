@@ -1,13 +1,18 @@
 ---
-runtime: shiny
 output: html_document
+runtime: shiny
 ---
-
  Best Soccer club in the world - Case Study
 ==========================================
 
 ## Business motivation
- 
+
+The challenge:
+"Football teams have websites. You will have the data about what users do on their website. Use what you learnt to provide insights to the management of the best football team in the world. How users find the website, what they do in it, how they sell tickets and merchandising, any insight is valuable to understand how they are spreading the brand all over the world.""
+
+The data:
+Data on the the club's website usage and tickets' purchase referring to the period of one month was provided (probably from mid-Jan to mid-Feb). Aprox 15% of tickets are sold on realmadrid.com site, though users can also buy tickets in another websites (entradas.com, for example), at the stadium (offline), etc.
+
 ## Data Description
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
@@ -31,24 +36,24 @@ top_entrppage = entrppage[sort(entrppage$Revenues, decreasing =  TRUE, index.ret
 t3 <- gvisTable(top_entrppage,options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(top_entrppage) + 1)), allowHTML = TRUE, page = 'disable'))
 print(t3,'chart')
 
-Bubble1 <- gvisBubbleChart(data.frame(gadata5), idvar="Country", yvar="Log_Trans", xvar="Rev_per_trans", colorvar="Revenues",sizevar="Revenues", options = list(showRowNumber = FALSE, width = 1000, height =800,sizeAxis = '{minValue: 0,  maxSize: 100}',axisTitlesPosition="out"))
+Bubble1 <- gvisBubbleChart(data.frame(gadata5), idvar="Country", yvar="Log_Trans", xvar="Rev_per_trans", colorvar="Revenues",sizevar="Revenues")
 print(Bubble1,'chart')
 
 ```
 
 ```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis'}
 
-entrppage <-  group_by(gadata3, factor(Ciudad)) %>% summarise(Ingresos = sum(Ingresos))
-entrppage = data.frame(cities = entrppage$`factor(Ciudad)`, Ingresos = entrppage$Ingresos)
-top_entrppage = entrppage[sort(entrppage$Ingresos, decreasing =  TRUE, index.return = TRUE)$ix,]
+entrppage23 <-  group_by(gadata3, factor(Ciudad)) %>% summarise(Ingresos = sum(Ingresos))
+entrppage23 = data.frame(cities1 = entrppage23$`factor(Ciudad)`, Ingresos = entrppage23$Ingresos)
+top_entrppage23 = entrppage23[sort(entrppage23$Ingresos, decreasing =  TRUE, index.return = TRUE)$ix,]
 
-sliderInput("high", "Highest Buyers:", min = 1, max = 200, value = c(1,25))
+sliderInput("high", "Highest Buyers:", min = 1, max = 40, value = c(1,25))
 
 renderPlot({
 
-ll.cities <- geocode(as.character(top_entrppage[(input$high[1]):(input$high[2]),1]))
-visit.x <- ll.cities$lon
-visit.y <- ll.cities$lat
+ll.cities1 <- geocode(as.character(top_entrppage23[(input$high[1]):(input$high[2]),1]))
+visit.x <- ll.cities1$lon
+visit.y <- ll.cities1$lat
 
 mp <- NULL
 mapWorld <- borders("world", colour="gray50", fill="gray50") # create a layer of borders
@@ -79,27 +84,76 @@ mp
   •	4% others<br>
 ***3. Is there a correlation between the time a page takes to load and sales? (Are we loosing clients because the site doesn’t load?)***<br>
   •	In a first analysis it seems that there is a 0.67 correlation between Transactions and Loading time<br>
-  •	However, when one builds a linear regression on the most significant variables (significance level=5%)<br>
-  •	Linear regression shows 0 coefficient for load time and a relatively small coefficient for ln(Load time), but 1 order of magnitude lower than the others<br>
+  •	However, when one builds a linear regression on the most significant variables (significance level=5%) it shows 0 coefficient for load time and a negligible coefficient for ln(Load time)<br>
 ***4. Are people who initially came from banners more likely to buy or not?***<br>
   •	Users that landed on the website coming from banners have zero purchases<br>
 ***5.	Can we build a model to predict average purchase?***<br>
   •	No, a regression for this would yield R2=8% but the regressions for quantity or total revenues yield R2=99%<br>
 
-## Questions to solve
 ***6. Adding to the question 1 of where do customer come from: do users in Madrid buy online? Is a significant share of the Spanish buyers from Madrid? Otherwise we can raise the question if the Madrilenos know that they can buy online...***<br>
 
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis', tidy=TRUE}
 
-***7. How do new users find the website? How could the club further spread the brand and increase the number of new users to the website?***<br>
-***8. Are ticket buyers already regular visitors to the site? Or are they mostly coming for one time purchase?***<br>
-***9. What is the average time spent on the website? What do users do on it?***<br>
-***10. Are users accessing from certain brands of computers/smartphones more likely to buy? Or to have a higher Order Average Value?***<br>
-***11. Could we find a way to better segment the market of buyers online?***<br>
-***12. What are the pages with the highest average time on page? Should we suggest to have more of this content? And do these views lead to sales?***<br>
-***13. How could the club further spread the brand? Which dimensions/metrics could we look into to address this? Eg. What is the bounce rate vs some benchmark?*** <br>
+entrppage <-  group_by(gadata3, factor(Ciudad)) %>% summarise(Ingresos = sum(Ingresos))
+entrppage = data.frame(cities = entrppage$`factor(Ciudad)`, Ingresos = entrppage$Ingresos)
+top_entrppage = entrppage[sort(entrppage$Ingresos, decreasing =  TRUE, index.return = TRUE)$ix,]
+
+t10 <- gvisTable(top_entrppage,options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(top_entrppage) + 1)), allowHTML = TRUE, page = 'disable'))
+print(t10,'chart')
+
+```
+
+***7. What is the average time spent on the website? What do users do on it? Should we suggest to have more of this content? And do these views lead to sales?***<br>
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis'}
+
+entrppage1 <-  group_by(gadata4[1:2000,], factor(Pagina)) %>% summarise(Promedio_de_tiempo_en_la_pagina = sum(Promedio_de_tiempo_en_la_pagina))
+entrppage1 = data.frame(pagess = entrppage1$`factor(Pagina)`, Promedio_de_tiempo_en_la_pagina = entrppage1$Promedio_de_tiempo_en_la_pagina)
+top_entrppage1 = entrppage1[sort(entrppage1$Promedio_de_tiempo_en_la_pagina, decreasing =  TRUE, index.return = TRUE)$ix,]
+
+t30 <- gvisTable(top_entrppage1,options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(top_entrppage1) + 1)), allowHTML = TRUE, page = 'disable'))
+print(t30,'chart')
+
+ggplot(top_entrppage1, aes(x = pagess, y = Promedio_de_tiempo_en_la_pagina)) + geom_bar(stat = "identity", fill = "lightblue", colour = "black")
+
+```
+
+***8. Are users accessing from certain brands of computers/smartphones more likely to buy? Or to have a higher Order Average Value?***<br>
+
+Analysis of revenues (device)
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis', tidy=TRUE}
+entrppage <-  group_by(gadata, factor(deviceCategory)) %>% summarise(Revenues = sum(Revenues))
+entrppage = data.frame(pages = entrppage$`factor(deviceCategory)`, Revenues = entrppage$Revenues)
+top_entrppage = entrppage[sort(entrppage$Revenues, decreasing =  TRUE, index.return = TRUE)$ix,]
+
+t31 <- gvisTable(top_entrppage,options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(top_entrppage) + 1)), allowHTML = TRUE, page = 'disable'))
+print(t31,'chart')
+```
+Analysis of transactions vs. revenue/transaction (operating system)
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis', tidy=TRUE}
+
+Bubble2 <- gvisBubbleChart(x<-data.frame(gadata6), idvar="Feature", yvar="Transactions", xvar="Ingr_transac", colorvar="Revenues",sizevar="Revenues", options = list(showRowNumber = FALSE, width = 1000, height =800,axisTitlesPosition="out"))
+print(Bubble2,'chart')
+```
+
+Analysis of transactions vs. revenue/transaction (operating system)
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis', tidy=TRUE}
+Bubble3 <- gvisBubbleChart(data.frame(gadata7), idvar="Feature", yvar="Transactions", xvar="Ingr_transac", colorvar="Revenues",sizevar="Revenues", options = list(showRowNumber = FALSE, width = 1000, height =800,axisTitlesPosition="out"))
+print(Bubble3,'chart')
+```
+
+***9. How could the club further spread the brand? Which dimensions/metrics could we look into to address this? Eg. What is the bounce rate vs some benchmark?*** <br>
+```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis', tidy=TRUE}
+wordcloud(gadata9$words,gadata9$count,max.words=60, colors=brewer.pal(8, "Dark2"))
+```
 
 ## Questions unsolvable due to lack of data
-1. Are there products that are typically bought together (e.g. game tickets and sweaters)? Could we work on some bundles? - ***Cannot test***<br>
-2. What are the trends in purchases before the matches? - ***Cannot test***<br>
+1. Are there products that are typically bought together (e.g. game tickets and sweaters)? Could we work on some bundles? - ***Cannot test - Cocktail doesn't have access to store data***<br>
+2. What are the trends in purchases before the matches? - ***Cannot test - confidential data***<br>
+3. Could we find a way to better segment the market of buyers online? - ***Cannot test - GA doesn't provide with enough data***<br>
+4. How do new users find the website? How could the club further spread the brand and increase the number of new users to the website? - ***Cannot test - Initial data didn't have this info and GA was "down" this week***<br>
+5. Are ticket buyers already regular visitors to the site? Or are they mostly coming for one time purchase? - ***Cannot test - Initial data didn't have this info and GA was "down" this week***<br>
+ <br>
+ <br>
  <br>
  <br>

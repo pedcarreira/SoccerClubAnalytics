@@ -56,7 +56,10 @@ report_file = "GAReport"
   gadata3 <- read.csv(paste(local_directory,"data/INS report RM III.csv", sep="/"), sep=";",dec=",")
   gadata4 <- read.csv(paste(local_directory,"data/INS report RM IV.csv", sep="/"), sep=";",dec=",")
   gadata5 <- read.csv(paste(local_directory,"data/INS report RM V.csv", sep="/"), sep=";",dec=",")
-
+  gadata6 <- read.csv(paste(local_directory,"data/INS report RM VI.csv", sep="/"), sep=";",dec=",")
+  gadata7 <- read.csv(paste(local_directory,"data/INS report RM VII.csv", sep="/"), sep=";",dec=",")
+  gadata9 <- read.csv(paste(local_directory,"data/INS report RM VIII.csv", sep="/"), sep=";",dec=",")
+    
 # Make sure ga.data contains the data you want
 #str(gadata)
 #head(gadata)

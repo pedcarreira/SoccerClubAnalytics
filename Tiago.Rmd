@@ -1,0 +1,37 @@
+
+
+ Best Soccer club in the world - Case Study
+==========================================
+
+## Business motivation
+ 
+## Data Description
+
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+source("RunStudy.R")
+setwd("./doc")
+
+t30 <- gvisTable(gadata4,options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(gadata4) + 1)), allowHTML = TRUE, page = 'disable'))
+print(t30,'chart')
+```
+
+
+ 
+***8. Are ticket buyers already regular visitors to the site? Or are they mostly coming for one time purchase?***<br>
+
+
+***9. What is the average time spent on the website? What do users do on it?***<br>
+
+
+
+***10. Are users accessing from certain brands of computers/smartphones more likely to buy? Or to have a higher Order Average Value?***<br>
+
+***11. Could we find a way to better segment the market of buyers online?***<br>
+***12. What are the pages with the highest average time on page? Should we suggest to have more of this content? And do these views lead to sales?***<br>
+***13. How could the club further spread the brand? Which dimensions/metrics could we look into to address this? Eg. What is the bounce rate vs some benchmark?*** <br>
+
+## Questions unsolvable due to lack of data
+1. Are there products that are typically bought together (e.g. game tickets and sweaters)? Could we work on some bundles? - ***Cannot test***<br>
+2. What are the trends in purchases before the matches? - ***Cannot test***<br>
+ <br>
+ <br>
