@@ -2,14 +2,6 @@
 output: html_document
 runtime: shiny
 ---
-```{r, echo=FALSE, eval=TRUE, message=FALSE, prompt=FALSE, results='asis'}
-source("RunStudy.R")
-setwd("./doc")
-
-img <- readPNG('real.png')
-grid::grid.raster(img)
-
-```
 
  Best Soccer club in the world - Case Study
 ==========================================
@@ -20,7 +12,7 @@ The challenge:
 "Football teams have websites. You will have the data about what users do on their website. Use what you learnt to provide insights to the management of the best football team in the world. How users find the website, what they do in it, how they sell tickets and merchandising, any insight is valuable to understand how they are spreading the brand all over the world.""
 
 The data:
-Data on the the club's website usage and tickets' purchase referring to the period of one month was provided (probably from mid-Jan to mid-Feb). Aprox 15% of tickets are sold on realmadrid.com site, though users can also buy tickets in another websites (entradas.com, for example), at the stadium (offline), etc.
+Data on the the club's website usage and tickets' purchase referring to the period of one month was provided (probably from mid-Jan to mid-Feb). Aprox 15% of tickets are sold on the website, though users can also buy tickets in another websites (entradas.com, for example), at the stadium (offline), etc.
 
 ## Data Description
 
